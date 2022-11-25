@@ -18,8 +18,8 @@ core::arch::global_asm!(include_str!("entry.asm"));
 #[no_mangle]
 pub fn rust_main() -> ! {
     clear_bss();
-    println!("Hello world!");
-    panic!("Shutdown machine!");
+    println!("Hello Ros!");
+    panic!("shutdown Ros!");
 }
 
 fn clear_bss() {
