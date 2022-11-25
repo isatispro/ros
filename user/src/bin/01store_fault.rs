@@ -4,14 +4,12 @@
 #[macro_use]
 extern crate user_lib;
 
-use core::arch::asm;
-
 #[no_mangle]
 fn main() -> i32 {
-    println!("Try to execute privileged instruction in U Mode");
+    println!("Into Test store_fault, we will insert an invalid store operation...");
     println!("Kernel should kill this application!");
     unsafe {
-        asm!("sret");
+        core::ptr::null_mut::<u8>().write_volatile(0);
     }
     0
 }
