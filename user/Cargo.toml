@@ -5,7 +5,6 @@ authors = ["isatis.yang <isatispro@qq.com>"]
 edition = "2021"
 
 [dependencies]
-riscv = { git = "https://github.com/rust-embedded/riscv.git" } 
 
 [profile.release]
 debug = true

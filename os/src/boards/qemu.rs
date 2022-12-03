@@ -1,6 +1,8 @@
 //ref:: https://github.com/andre-richter/qemu-exit
 use core::arch::asm;
 
+pub const CLOCK_FREQ: usize = 12500000;
+
 const EXIT_SUCCESS: u32 = 0x5555; // Equals `exit(0)`. qemu successful exit
 
 const EXIT_FAILURE_FLAG: u32 = 0x3333;
@@ -28,17 +30,23 @@ pub struct RISCV64 {
     addr: u64,
 }
 
-/// Encode the exit code using EXIT_FAILURE_FLAG.
-const fn exit_code_encode(code: u32) -> u32 {
-    (code << 16) | EXIT_FAILURE_FLAG
-}
-
 impl RISCV64 {
     /// Create an instance.
     pub const fn new(addr: u64) -> Self {
         RISCV64 { addr }
     }
 }
+/// Encode the exit code using EXIT_FAILURE_FLAG.
+const fn exit_code_encode(code: u32) -> u32 {
+    (code << 16) | EXIT_FAILURE_FLAG
+}
+
+// impl RISCV64 {
+//     /// Create an instance.
+//     pub const fn new(addr: u64) -> Self {
+//         RISCV64 { addr }
+//     }
+// }
 
 impl QEMUExit for RISCV64 {
     /// Exit qemu with specified exit code.
