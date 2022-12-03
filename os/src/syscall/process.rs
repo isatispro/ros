@@ -10,12 +10,12 @@ pub fn sys_exit(exit_code: i32) -> ! {
 }
 
 pub fn sys_yield() -> isize {
-    println!("[kernel] Application yield");
+    // println!("[kernel] Application yield");
     suspend_current_and_run_next();
     0
 }
 
 pub fn sys_get_time() -> isize {
-    println!("[kernel] Application get time");
+    // println!("[kernel] Application get time");
     get_time_ms() as isize
 }
