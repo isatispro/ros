@@ -5,8 +5,14 @@
 #![no_std]
 #![no_main]
 #![feature(panic_info_message)]
+#![feature(alloc_error_handler)]
 
 use core::arch::global_asm;
+
+extern crate alloc;
+
+#[macro_use]
+extern crate bitflags;
 
 #[path = "boards/qemu.rs"]
 mod board;
@@ -16,6 +22,7 @@ mod console;
 mod config;
 mod lang_item;
 mod loader;
+mod mm;
 mod sbi;
 mod sync;
 mod timer;
@@ -39,8 +46,10 @@ fn clear_bss() {
 #[no_mangle]
 pub fn rust_main() -> ! {
     clear_bss();
-    println!("[kernel] Hello Ros!");
-
+    println!("Hello Ros!");
+    mm::init();
+    println!("back to Ros!");
+    mm::heap_test();
     trap::init();
     loader::load_apps();
     trap::enable_timer_interrupt();

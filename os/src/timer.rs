@@ -2,7 +2,7 @@ use crate::config::CLOCK_FREQ;
 use crate::sbi::set_timer;
 use riscv::register::time;
 
-const TICKS_PER_SEC: usize = 100;
+const TICKS_PER_SEC: usize = 10000;
 const MSEC_PER_SEC: usize = 1000;
 
 /// read the `mtime` register

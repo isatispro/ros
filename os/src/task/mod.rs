@@ -66,13 +66,13 @@ impl TaskManager {
         let mut _unused = TaskContext::zero_init();
         // before this, we should drop local variables that must be dropped manually
 
-        println!("[kernel] start switch cx");
+        println!("start switch cx");
 
         unsafe {
             __switch(&mut _unused as *mut TaskContext, next_task_cx_ptr);
         }
 
-        panic!("[kernel] unreachable in run_first_task!");
+        panic!("unreachable in run_first_task!");
     }
 
     /// Change the status of current `Running` task into `Ready`.
@@ -98,6 +98,18 @@ impl TaskManager {
         (current + 1..current + self.num_app + 1)
             .map(|id| id % self.num_app)
             .find(|id| inner.tasks[*id].task_status == TaskStatus::Ready)
+    }
+
+    /// Get the current 'Running' task's token.
+    fn get_current_token(&self) -> usize {
+        let inner = self.inner.exclusive_access();
+        inner.tasks[inner.current_task].get_user_token()
+    }
+
+    /// Get the current 'Running' task's trap contexts.
+    fn get_current_trap_cx(&self) -> &'static mut TrapContext {
+        let inner = self.inner.exclusive_access();
+        inner.tasks[inner.current_task].get_trap_cx()
     }
 
     /// Switch current `Running` task to the task we have found,
@@ -154,4 +166,14 @@ pub fn suspend_current_and_run_next() {
 pub fn exit_current_and_run_next() {
     mark_current_exited();
     run_next_task();
+}
+
+/// Get the current 'Running' task's token.
+pub fn current_user_token() -> usize {
+    TASK_MANAGER.get_current_token()
+}
+
+/// Get the current 'Running' task's trap contexts.
+pub fn current_trap_cx() -> &'static mut TrapContext {
+    TASK_MANAGER.get_current_trap_cx()
 }
