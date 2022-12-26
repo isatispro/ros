@@ -49,9 +49,10 @@ pub fn rust_main() -> ! {
     println!("Hello Ros!");
     mm::init();
     println!("back to Ros!");
-    mm::heap_test();
+    // mm::heap_test();
+    mm::remap_test();
     trap::init();
-    loader::load_apps();
+    // loader::load_apps();
     trap::enable_timer_interrupt();
     timer::set_next_trigger();
     task::run_first_task();
